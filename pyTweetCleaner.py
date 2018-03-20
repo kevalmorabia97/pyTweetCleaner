@@ -1,22 +1,32 @@
-# REMOVE         TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SOMEONE ELSE'S TWEETS
-#                TWEETS THAT HAVE lang != en i.e. NOT IN ENGLISH LANGUAGE
-#                DATA ABOUT DELETED TWEETS
-#                NON-ASCII CHARACTERS FROM text
-#                links FROM text
-#                HASH(#) SYMBOLS BUT KEEP HASHTAG AS NORMAL TWEET TEXT BUT SPLIT HASHTAG AT UPPERCASE LETTERS 
-#                @name MENTIONS IN TEXT
-#   
-# KEEP           created_at
-#                id
-#                text IN LOWERCASE AFTER SPLITTING COMPOUND WORDS, REMOVING STOPWORDS AND WORDS OF LENGTH 1
-#                user_id
-#                user_name
-#                user_screen_name
-#                geo
-#                coordinates
-#                place
-#                retweet_count
-#                entities
+#!/usr/bin/env python
+
+"""
+pyTweetCleaner.py: Python module to clean twitter json data and remove unnecessary tweet data
+
+REMOVE:        TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SOMEONE ELSE'S TWEETS
+               TWEETS THAT HAVE lang != en i.e. NOT IN ENGLISH LANGUAGE
+               DATA ABOUT DELETED TWEETS
+               NON-ASCII CHARACTERS FROM text
+               links FROM text
+               HASH(#) SYMBOLS BUT KEEP HASHTAG AS NORMAL TWEET TEXT BUT SPLIT HASHTAG AT UPPERCASE LETTERS 
+               @name MENTIONS IN TEXT
+  
+KEEP:          created_at
+               id
+               text IN LOWERCASE AFTER SPLITTING COMPOUND WORDS, REMOVING STOPWORDS AND WORDS OF LENGTH 1
+               user_id
+               user_name
+               user_screen_name
+               geo
+               coordinates
+               place
+               retweet_count
+               entities
+"""
+
+__author__ = 'Keval Morabia'
+__license__ = 'MIT'
+__email__ = 'kevalmorabia97@gmail.com'
 
 import json
 import re
