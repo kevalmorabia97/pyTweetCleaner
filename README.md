@@ -12,7 +12,7 @@ tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_ou
 <hr>
 
 **Requirements:**
-1. nltk==3.2.4
+1. nltk>=3.2.4
 ```
 pip install -r requirements.txt
 ```
