@@ -37,11 +37,14 @@ from nltk.tokenize import word_tokenize
 
 
 class TweetCleaner:
-    def __init__(self):
+    def __init__(self, remove_stop_words = True):
         """
         clean unnecessary twitter data
         """
-        self.stop_words = set(stopwords.words('english'))
+        
+        if remove_stop_words: self.stop_words = set(stopwords.words('english'))
+        else: self.stop_words = set()
+        
         self.punc_table = str.maketrans("", "", string.punctuation) # to remove punctuation from each word in tokenize
     
     def compound_word_split(self, compound_word):
@@ -109,6 +112,7 @@ class TweetCleaner:
         out_file.close()
     
 if __name__  == '__main__':
-    tc = TweetCleaner()
+    #tc = TweetCleaner(remove_stop_words = False)
+    tc = TweetCleaner(remove_stop_words = True)
     tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
     print('TweetCleaning DONE...')
