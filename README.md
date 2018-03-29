@@ -5,7 +5,7 @@ Python module to clean twitter json data and remove unnecessary tweet data
 ```python
 from pyTweetCleaner import TweetCleaner
 
-tc = TweetCleaner()
+tc = TweetCleaner(remove_stop_words = True)
 tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
 ```
 
