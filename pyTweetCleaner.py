@@ -89,8 +89,8 @@ class TweetCleaner:
             
             cleaned_text = self.remove_hyperlinks(cleaned_text)
             
-            tokens = [w.translate(self.punc_table) for w in word_tokenize(cleaned_text)] # remove punctuations and tokenize
-            cleaned_text = ' '.join([' '.join(self.compound_word_split(w)).lower() for w in tokens if w not in self.stop_words and len(w)>1]) # remove stopwords, convert to lowercase
+            tokens = [w.translate(self.punc_table).lower() for w in word_tokenize(cleaned_text)] # remove punctuations and tokenize
+            cleaned_text = ' '.join([' '.join(self.compound_word_split(w)) for w in tokens if w not in self.stop_words and len(w)>1]) # remove stopwords, convert to lowercase
             
             cleaned_tweet = {}
             cleaned_tweet['created_at'] = tweet['created_at']
