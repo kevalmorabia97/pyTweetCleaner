@@ -130,6 +130,5 @@ if __name__  == '__main__':
     #tc = TweetCleaner(remove_stop_words = False)
     tc = TweetCleaner(remove_stop_words = True)
     tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
-    print(tc.get_cleaned_text('I played the Sandy Caps mini game in Paradise Island 2, and my score was: 317 #GameInsight #ParadiseIsland2'))
-    
+    print(tc.get_cleaned_text('Cleaning unnecessary data with pyTweetCleaner by @kevalmorabia97. #pyTWEETCleaner Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner'))    
     print('TweetCleaning DONE...')
