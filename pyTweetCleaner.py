@@ -78,8 +78,12 @@ class TweetCleaner:
         
         cleaned_text = self.remove_hyperlinks(cleaned_text)
         
-        tokens = [w.translate(self.punc_table).lower() for w in word_tokenize(cleaned_text)] # remove punctuations and tokenize
-        cleaned_text = ' '.join([' '.join(self.compound_word_split(w)) for w in tokens if w not in self.stop_words and len(w)>1]) # remove stopwords, convert to lowercase
+        # remove punctuations
+        tokens = [w.translate(self.punc_table) for w in word_tokenize(cleaned_text)] 
+        
+        # remove stopwords, convert to lowercase
+        tokens = [' '.join(self.compound_word_split(w)).lower() for w in tokens if not w.lower() in self.stop_words and len(w)>1]
+        cleaned_text = ' '.join(tokens)
         
         return cleaned_text
     
@@ -126,4 +130,6 @@ if __name__  == '__main__':
     #tc = TweetCleaner(remove_stop_words = False)
     tc = TweetCleaner(remove_stop_words = True)
     tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
+    print(tc.get_cleaned_text('I played the Sandy Caps mini game in Paradise Island 2, and my score was: 317 #GameInsight #ParadiseIsland2'))
+    
     print('TweetCleaning DONE...')
