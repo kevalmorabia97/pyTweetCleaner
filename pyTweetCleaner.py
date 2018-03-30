@@ -66,6 +66,22 @@ class TweetCleaner:
         return text after removing hyperlinks
         """
         return ' '.join([w for w in text.split(' ')  if not 'http' in w])
+      
+    def get_cleaned_text(self, text):
+        cleaned_text = text.replace('\"','').replace('-',' ')
+            
+        cleaned_text =  self.remove_non_ascii_chars(cleaned_text)
+        
+        ### To remove RT @name: from beginning of retweeted tweets
+ #        if 'RT @' in cleaned_text:
+ #            cleaned_text = cleaned_text[cleaned_text.index(':')+2:]
+        
+        cleaned_text = self.remove_hyperlinks(cleaned_text)
+        
+        tokens = [w.translate(self.punc_table).lower() for w in word_tokenize(cleaned_text)] # remove punctuations and tokenize
+        cleaned_text = ' '.join([' '.join(self.compound_word_split(w)) for w in tokens if w not in self.stop_words and len(w)>1]) # remove stopwords, convert to lowercase
+        
+        return cleaned_text
     
     def clean_tweets(self, input_file, output_file='cleaned_tweets.json'):    
         """
@@ -83,15 +99,10 @@ class TweetCleaner:
             if not "created_at" in tweet: continue # remove info about deleted tweets
             if not tweet['lang'] == 'en': continue # remove tweets in non engligh(or lang) language
             if not tweet['in_reply_to_status_id'] == None or not tweet['in_reply_to_user_id'] == None: continue # remove comments of any tweet
-            cleaned_text = tweet['text'].replace('\"','').replace('-',' ')
             
-            cleaned_text =  self.remove_non_ascii_chars(cleaned_text)
-            
-            cleaned_text = self.remove_hyperlinks(cleaned_text)
-            
-            tokens = [w.translate(self.punc_table).lower() for w in word_tokenize(cleaned_text)] # remove punctuations and tokenize
-            cleaned_text = ' '.join([' '.join(self.compound_word_split(w)) for w in tokens if w not in self.stop_words and len(w)>1]) # remove stopwords, convert to lowercase
-            
+            cleaned_text = self.get_cleaned_text(tweet['text'])
+            if cleaned_text == '': continue
+
             cleaned_tweet = {}
             cleaned_tweet['created_at'] = tweet['created_at']
             cleaned_tweet['id'] = tweet['id']
