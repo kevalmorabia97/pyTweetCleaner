@@ -1,13 +1,23 @@
 # pyTweetCleaner
 Python module to clean twitter json data and remove unnecessary tweet data
 
-**Usage:**
+**Usage1:**
 ```python
 from pyTweetCleaner import TweetCleaner
 
 tc = TweetCleaner(remove_stop_words = True)
 tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
 ```
+
+**Usage2:**
+```python
+from pyTweetCleaner import TweetCleaner
+
+tc = TweetCleaner(remove_stop_words = True)
+print(tc.get_cleaned_text('I played the Sandy Caps mini game in Paradise Island 2, and my score was: 317 #GameInsight #ParadiseIsland2'))
+>>> played sandy caps mini game paradise island score 317 game insight paradise island2
+```
+
 
 <hr>
 
