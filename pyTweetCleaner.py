@@ -68,7 +68,7 @@ class TweetCleaner:
         return ' '.join([w for w in text.split(' ')  if not 'http' in w])
       
     def get_cleaned_text(self, text):
-        cleaned_text = text.replace('\"','').replace('-',' ')
+        cleaned_text = text.replace('\"','').replace('\'','').replace('-',' ')
             
         cleaned_text =  self.remove_non_ascii_chars(cleaned_text)
         
