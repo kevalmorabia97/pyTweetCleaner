@@ -4,7 +4,7 @@ Python module to clean twitter json data and remove unnecessary tweet data
 **Usage1:**
 ```python
 >>> from pyTweetCleaner import TweetCleaner
->>> tc = TweetCleaner(remove_stop_words = True)
+>>> tc = TweetCleaner(remove_stop_words=True, remove_retweets=True)
 >>> tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
 TweetCleaning DONE...
 ```
@@ -12,7 +12,7 @@ TweetCleaning DONE...
 **Usage2:**
 ```python
 >>> from pyTweetCleaner import TweetCleaner
->>> tc = TweetCleaner(remove_stop_words = True)
+>>> tc = TweetCleaner(remove_stop_words=True, remove_retweets=True)
 >>> print(tc.get_cleaned_text('Cleaning unnecessary data with pyTweetCleaner by @kevalmorabia97. #pyTWEETCleaner Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner'))
 cleaning unnecessary data py tweet cleaner kevalmorabia97 py tweet cleaner check
 ```
