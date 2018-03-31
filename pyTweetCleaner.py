@@ -37,13 +37,17 @@ from nltk.tokenize import word_tokenize
 
 
 class TweetCleaner:
-    def __init__(self, remove_stop_words = False):
+    def __init__(self, remove_stop_words = False, remove_retweets=True):
         """
         clean unnecessary twitter data
+        remove_stop_words = True if stopwords are to be removed (default = False)
+        remove_retweets = True if retweets are to be removed (default = True)
         """
         
         if remove_stop_words: self.stop_words = set(stopwords.words('english'))
         else: self.stop_words = set()
+        
+        self.remove_retweets = remove_retweets
         
         self.punc_table = str.maketrans("", "", string.punctuation) # to remove punctuation from each word in tokenize
     
@@ -72,9 +76,10 @@ class TweetCleaner:
             
         cleaned_text =  self.remove_non_ascii_chars(cleaned_text)
         
-        ### To remove RT @name: from beginning of retweeted tweets
- #        if 'RT @' in cleaned_text:
- #            cleaned_text = cleaned_text[cleaned_text.index(':')+2:]
+        # retweet
+        if 'RT @' in cleaned_text:
+            if self.remove_retweets: return ''
+            cleaned_text = cleaned_text[cleaned_text.index(':')+2:]
         
         cleaned_text = self.remove_hyperlinks(cleaned_text)
         
@@ -128,7 +133,7 @@ class TweetCleaner:
     
 if __name__  == '__main__':
     #tc = TweetCleaner(remove_stop_words = False)
-    tc = TweetCleaner(remove_stop_words = True)
+    tc = TweetCleaner(remove_stop_words = True, remove_retweets=True)
     tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
     print(tc.get_cleaned_text('Cleaning unnecessary data with pyTweetCleaner by @kevalmorabia97. #pyTWEETCleaner Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner'))    
     print('TweetCleaning DONE...')
