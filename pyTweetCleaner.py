@@ -77,21 +77,24 @@ class TweetCleaner:
         cleaned_text =  self.remove_non_ascii_chars(cleaned_text)
         
         # retweet
-        if 'RT @' in cleaned_text:
+        if cleaned_text.startswith('RT @'): # retweet
             if self.remove_retweets: return ''
             cleaned_text = cleaned_text[cleaned_text.index(':')+2:]
         
         cleaned_text = self.remove_hyperlinks(cleaned_text)
         
-        # remove punctuations
-        tokens = [w.translate(self.punc_table) for w in word_tokenize(cleaned_text)] 
+        cleaned_text = cleaned_text.replace('#','hashstart') # to split hashtags after removing punctuations
         
-        # remove stopwords, convert to lowercase
-        tokens = [' '.join(self.compound_word_split(w)).lower() for w in tokens if not w.lower() in self.stop_words and len(w)>1]
+        tokens = [w.translate(self.punc_table) for w in word_tokenize(cleaned_text)] # remove punctuations and tokenize
+        new_tokens = []
+        for w in tokens: 
+            if w.startswith('hashstart'): new_tokens += self.compound_word_split(w[8:])
+            else: new_tokens.append(w)
+        tokens = [w.lower() for w in new_tokens if not w.lower() in self.stop_words and len(w)>1]
         cleaned_text = ' '.join(tokens)
         
         return cleaned_text
-    
+
     def clean_tweets(self, input_file, output_file='cleaned_tweets.json'):    
         """
         input_file: name or path of input twitter json data
