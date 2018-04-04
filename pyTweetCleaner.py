@@ -9,7 +9,7 @@ REMOVE:        TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SO
                NON-ASCII CHARACTERS FROM text
                links FROM text
                HASH(#) SYMBOLS BUT KEEP HASHTAG AS NORMAL TWEET TEXT BUT SPLIT HASHTAG AT UPPERCASE LETTERS 
-               @name MENTIONS IN TEXT
+               @ SYMBOL IN @name MENTIONS IN TEXT AND SPLITTING NAME AT UPPERCASE. EX:  
   
 KEEP:          created_at
                id
@@ -83,12 +83,12 @@ class TweetCleaner:
         
         cleaned_text = self.remove_hyperlinks(cleaned_text)
         
-        cleaned_text = cleaned_text.replace('#','hashstart') # to split hashtags after removing punctuations
+        cleaned_text = cleaned_text.replace('#','splitstart').replace('@','splitstart') # to split #hashtags and @name after removing punctuations
         
         tokens = [w.translate(self.punc_table) for w in word_tokenize(cleaned_text)] # remove punctuations and tokenize
         new_tokens = []
         for w in tokens: 
-            if w.startswith('hashstart'): new_tokens += self.compound_word_split(w[8:])
+            if w.startswith('splitstart'): new_tokens += self.compound_word_split(w[10:])
             else: new_tokens.append(w)
         tokens = [w.lower() for w in new_tokens if not w.lower() in self.stop_words and len(w)>1]
         cleaned_text = ' '.join(tokens)
@@ -138,5 +138,5 @@ if __name__  == '__main__':
     #tc = TweetCleaner(remove_stop_words = False)
     tc = TweetCleaner(remove_stop_words = True, remove_retweets=True)
     tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
-    print(tc.get_cleaned_text('Cleaning unnecessary data with pyTweetCleaner by @kevalmorabia97. #pyTWEETCleaner Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner'))    
+    print(tc.get_cleaned_text('Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97. #pyTWEETCleaner Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner'))    
     print('TweetCleaning DONE...')
