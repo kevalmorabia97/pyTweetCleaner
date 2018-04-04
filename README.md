@@ -13,8 +13,8 @@ TweetCleaning DONE...
 ```python
 >>> from pyTweetCleaner import TweetCleaner
 >>> tc = TweetCleaner(remove_stop_words=True, remove_retweets=True)
->>> print(tc.get_cleaned_text('Cleaning unnecessary data with pyTweetCleaner by @kevalmorabia97. #pyTWEETCleaner Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner'))
-cleaning unnecessary data py tweet cleaner kevalmorabia97 py tweet cleaner check
+>>> print(tc.get_cleaned_text('Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia. #pyTWEETCleaner Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner'))
+cleaning unnecessary data py tweet cleaner keval morabia py tweet cleaner check
 ```
 
 
@@ -36,7 +36,7 @@ REMOVE      TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SOMEO
             NON-ASCII CHARACTERS FROM text
             links FROM text
             HASH(#) SYMBOLS BUT KEEP HASHTAG AS NORMAL TWEET TEXT BUT SPLIT HASHTAG AT UPPERCASE LETTERS 
-            @name MENTIONS IN TEXT
+            @ SYMBOL IN @name MENTIONS IN TEXT AND SPLITTING NAME AT UPPERCASE. EX: '@AbcXyz' --> 'abc xyz' 
   
 KEEP        created_at
             id
