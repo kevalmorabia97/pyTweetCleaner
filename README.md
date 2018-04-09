@@ -36,7 +36,7 @@ REMOVE      TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SOMEO
             NON-ASCII CHARACTERS FROM text
             links FROM text
             HASH(#) SYMBOLS BUT KEEP HASHTAG AS NORMAL TWEET TEXT BUT SPLIT HASHTAG AT UPPERCASE LETTERS 
-            @ SYMBOL IN @name MENTIONS IN TEXT AND SPLITTING NAME AT UPPERCASE. EX: '@AbcXyz' --> 'abc xyz' 
+            @ SYMBOL IN @name MENTIONS IN TEXT AND SPLITTING NAME AT UPPERCASE. EX: '@ABCXyz' --> 'abc xyz' 
   
 KEEP        created_at
             id
