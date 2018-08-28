@@ -36,12 +36,11 @@ from nltk.tokenize import word_tokenize
 
 
 class TweetCleaner:
-    def __init__(self, remove_stop_words=False, remove_retweets=True):
+    def __init__(self, remove_stop_words=False, remove_retweets=False):
         """
         clean unnecessary twitter data
         remove_stop_words = True if stopwords are to be removed (default = False)
-        remove_retweets = True if retweets are to be removed (default = True)
-        remove_punctuations = True if punctuations are to be removed (default = False)
+        remove_retweets = True if retweets are to be removed (default = False)
         """
         
         if remove_stop_words: self.stop_words = set(stopwords.words('english'))
@@ -141,17 +140,4 @@ class TweetCleaner:
         out_file.close()
     
 if __name__  == '__main__':
-    sample_text = 'RT @testUser: Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97. #pyTWEETCleaner, Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner and star the repo!'
-     
-    tc = TweetCleaner(remove_stop_words=True, remove_retweets=False)
-    tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json') # clean tweets from entire file
-    print('Output with remove_stop_words=True, remove_retweets=False:')
-    print(tc.get_cleaned_text(sample_text), '\n')
-    
-    tc = TweetCleaner(remove_stop_words=False, remove_retweets=True)
-    print('Output with remove_stop_words=False, remove_retweets=True:')
-    print(tc.get_cleaned_text(sample_text), '\n')
-    
-    tc = TweetCleaner(remove_stop_words=False, remove_retweets=False)
-    print('Output with remove_stop_words=False, remove_retweets=False:')
-    print(tc.get_cleaned_text(sample_text))
+    sample_text = 'RT @testUser: Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97. #pyTWEETCleaner, C
