@@ -40,25 +40,24 @@ pip install -r requirements.txt
 
 **Data Removed and Kept:**
 ```
-REMOVE      TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SOMEONE ELSE'S TWEETS
-            TWEETS THAT HAVE lang != en i.e. NOT IN ENGLISH LANGUAGE
-            DATA ABOUT DELETED TWEETS
-            NON-ASCII CHARACTERS FROM text
-            links FROM text
-            HASH(#) SYMBOLS BUT KEEP HASHTAG AS NORMAL TWEET TEXT BUT SPLIT HASHTAG AT UPPERCASE LETTERS 
-            @ SYMBOL IN @name MENTIONS IN TEXT AND SPLITTING NAME AT UPPERCASE. EX: '@ABCXyz' --> 'abc xyz' 
+REMOVE:        TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SOMEONE ELSE'S TWEETS
+               TWEETS THAT HAVE lang != en i.e. NOT IN ENGLISH LANGUAGE
+               DATA ABOUT DELETED TWEETS
+               NON-ASCII CHARACTERS FROM text
+               HYPERLINKS FROM text
   
-KEEP        created_at
-            id
-            text IN LOWERCASE AFTER SPLITTING COMPOUND WORDS, REMOVING STOPWORDS AND WORDS OF LENGTH 1
-            user_id
-            user_name
-            user_screen_name
-            geo
-            coordinates
-            place
-            retweet_count
-            entities
+KEEP:          created_at
+               id
+               text
+               user_id
+               user_name
+               user_screen_name
+               user_followers_count
+               geo
+               coordinates
+               place
+               retweet_count
+               entities
 ```
 
 **Note:** If you want only some of these data fields then comment others in _pyTweetCleaner.py_ file.
