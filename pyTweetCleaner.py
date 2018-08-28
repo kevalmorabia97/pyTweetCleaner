@@ -7,16 +7,15 @@ REMOVE:        TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SO
                TWEETS THAT HAVE lang != en i.e. NOT IN ENGLISH LANGUAGE
                DATA ABOUT DELETED TWEETS
                NON-ASCII CHARACTERS FROM text
-               links FROM text
-               HASH(#) SYMBOLS BUT KEEP HASHTAG AS NORMAL TWEET TEXT BUT SPLIT HASHTAG AT UPPERCASE LETTERS 
-               @ SYMBOL IN @name MENTIONS IN TEXT AND SPLITTING NAME AT UPPERCASE. EX: '@AbcXyz' --> 'abc xyz' 
+               HYPERLINKS FROM text
   
 KEEP:          created_at
                id
-               text IN LOWERCASE AFTER SPLITTING COMPOUND WORDS, REMOVING STOPWORDS AND WORDS OF LENGTH 1
+               text
                user_id
                user_name
                user_screen_name
+               user_followers_count
                geo
                coordinates
                place
@@ -37,11 +36,12 @@ from nltk.tokenize import word_tokenize
 
 
 class TweetCleaner:
-    def __init__(self, remove_stop_words = False, remove_retweets=True):
+    def __init__(self, remove_stop_words=False, remove_retweets=True):
         """
         clean unnecessary twitter data
         remove_stop_words = True if stopwords are to be removed (default = False)
         remove_retweets = True if retweets are to be removed (default = True)
+        remove_punctuations = True if punctuations are to be removed (default = False)
         """
         
         if remove_stop_words: self.stop_words = set(stopwords.words('english'))
@@ -53,8 +53,8 @@ class TweetCleaner:
     
     def compound_word_split(self, compound_word):
         """
-        Split a given compound word and return list of words in given compound_word
-        Ex: 'pyTWEETCleaner' --> ['py', 'TWEET', 'Cleaner']
+        Split a given compound word(string) and return list of words in given compound_word
+        Ex: compound_word='pyTWEETCleaner' --> ['py', 'TWEET', 'Cleaner']
         """
         matches = re.finditer('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', compound_word)
         return [m.group(0) for m in matches]
@@ -79,19 +79,21 @@ class TweetCleaner:
         # retweet
         if cleaned_text.startswith('RT @'): # retweet
             if self.remove_retweets: return ''
+            retweet_info = cleaned_text[:cleaned_text.index(':')+2] # 'RT @name: ' will be again added in the text after cleaning
             cleaned_text = cleaned_text[cleaned_text.index(':')+2:]
-        
+        else:
+            retweet_info = ''
+            
         cleaned_text = self.remove_hyperlinks(cleaned_text)
         
-        cleaned_text = cleaned_text.replace('#','splitstart').replace('@','splitstart') # to split #hashtags and @name after removing punctuations
+        cleaned_text = cleaned_text.replace('#','HASHTAGSYMBOL').replace('@','ATSYMBOL') # to avoid being removed while removing punctuations
         
         tokens = [w.translate(self.punc_table) for w in word_tokenize(cleaned_text)] # remove punctuations and tokenize
-        new_tokens = []
-        for w in tokens: 
-            if w.startswith('splitstart'): new_tokens += self.compound_word_split(w[10:])
-            else: new_tokens.append(w)
-        tokens = [w.lower() for w in new_tokens if not w.lower() in self.stop_words and len(w)>1]
+        tokens = [w for w in tokens if not w.lower() in self.stop_words and len(w)>1] # remove stopwords and single length words
         cleaned_text = ' '.join(tokens)
+        
+        cleaned_text = cleaned_text.replace('HASHTAGSYMBOL','#').replace('ATSYMBOL','@')
+        cleaned_text = retweet_info + cleaned_text
         
         return cleaned_text
 
@@ -109,20 +111,24 @@ class TweetCleaner:
             tweet = json.loads(line)
             
             if not "created_at" in tweet: continue # remove info about deleted tweets
-            if not tweet['lang'] == 'en': continue # remove tweets in non engligh(or lang) language
+            if not tweet['lang'] == 'en': continue # remove tweets in non english language
             if not tweet['in_reply_to_status_id'] == None or not tweet['in_reply_to_user_id'] == None: continue # remove comments of any tweet
             
             cleaned_text = self.get_cleaned_text(tweet['text'])
             if cleaned_text == '': continue
 
             cleaned_tweet = {}
+            
             cleaned_tweet['created_at'] = tweet['created_at']
             cleaned_tweet['id'] = tweet['id']
             cleaned_tweet['text'] = cleaned_text
+            
             cleaned_tweet['user'] = {}
             cleaned_tweet['user']['id'] = tweet['user']['id']
             cleaned_tweet['user']['name'] = tweet['user']['name']
             cleaned_tweet['user']['screen_name'] = tweet['user']['screen_name']
+            cleaned_tweet['user']['followers_count'] = tweet['user']['followers_count']
+            
             cleaned_tweet['geo'] = tweet['geo']
             cleaned_tweet['coordinates'] = tweet['coordinates']
             cleaned_tweet['place'] = tweet['place']
@@ -135,8 +141,17 @@ class TweetCleaner:
         out_file.close()
     
 if __name__  == '__main__':
-    #tc = TweetCleaner(remove_stop_words = False)
-    tc = TweetCleaner(remove_stop_words = True, remove_retweets=True)
-    tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
-    print(tc.get_cleaned_text('Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97. #pyTWEETCleaner Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner'))    
-    print('TweetCleaning DONE...')
+    sample_text = 'RT @testUser: Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97. #pyTWEETCleaner, Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner and star the repo!'
+     
+    tc = TweetCleaner(remove_stop_words=True, remove_retweets=False)
+    tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json') # clean tweets from entire file
+    print('Output with remove_stop_words=True, remove_retweets=False:')
+    print(tc.get_cleaned_text(sample_text), '\n')
+    
+    tc = TweetCleaner(remove_stop_words=False, remove_retweets=True)
+    print('Output with remove_stop_words=False, remove_retweets=True:')
+    print(tc.get_cleaned_text(sample_text), '\n')
+    
+    tc = TweetCleaner(remove_stop_words=False, remove_retweets=False)
+    print('Output with remove_stop_words=False, remove_retweets=False:')
+    print(tc.get_cleaned_text(sample_text))
