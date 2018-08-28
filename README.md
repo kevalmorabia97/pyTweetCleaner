@@ -6,15 +6,25 @@ Python module to clean twitter json data and remove unnecessary tweet data
 >>> from pyTweetCleaner import TweetCleaner
 >>> tc = TweetCleaner(remove_stop_words=True, remove_retweets=True)
 >>> tc.clean_tweets(input_file='data/sample_input.json', output_file='data/sample_output.json')
-TweetCleaning DONE...
 ```
 
 **Usage2:**
 ```python
 >>> from pyTweetCleaner import TweetCleaner
->>> tc = TweetCleaner(remove_stop_words=True, remove_retweets=True)
->>> print(tc.get_cleaned_text('Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia. #pyTWEETCleaner Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner'))
-cleaning unnecessary data py tweet cleaner keval morabia py tweet cleaner check
+>>> sample_text = 'RT @testUser: Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97. #pyTWEETCleaner, Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner and star the repo! '
+>>>
+>>> tc = TweetCleaner(remove_stop_words=True, remove_retweets=False)
+>>> print(tc.get_cleaned_text(sample_text))
+RT @testUser: Cleaning unnecessary data pyTweetCleaner @kevalMorabia97 #pyTWEETCleaner Check star repo
+>>>
+>>> tc = TweetCleaner(remove_stop_words=False, remove_retweets=True)
+>>> print(tc.get_cleaned_text(sample_text))
+ 
+>>>
+>>> tc = TweetCleaner(remove_stop_words=False, remove_retweets=False)
+>>> print(tc.get_cleaned_text(sample_text))
+RT @testUser: Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97 #pyTWEETCleaner Check it out at and star the repo
+
 ```
 
 
