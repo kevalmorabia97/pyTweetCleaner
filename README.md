@@ -58,6 +58,7 @@ KEEP:          created_at
                place
                retweet_count
                entities
+               retweeted_status
 ```
 
 **Note:** If you want only some of these data fields then comment others in _pyTweetCleaner.py_ file.
