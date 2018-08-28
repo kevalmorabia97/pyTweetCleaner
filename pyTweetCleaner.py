@@ -79,7 +79,7 @@ class TweetCleaner:
         cleaned_text =  self.remove_non_ascii_chars(cleaned_text)
         
         # retweet
-        if cleaned_text.startswith('RT @'): # retweet
+        if re.match(r'RT @[_A-Za-z0-9]+:',cleaned_text): # retweet
             if self.remove_retweets: return ''
             retweet_info = cleaned_text[:cleaned_text.index(':')+2] # 'RT @name: ' will be again added in the text after cleaning
             cleaned_text = cleaned_text[cleaned_text.index(':')+2:]
