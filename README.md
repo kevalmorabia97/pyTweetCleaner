@@ -13,17 +13,17 @@ Python module to clean twitter json data and remove unnecessary tweet data
 >>> from pyTweetCleaner import TweetCleaner
 >>> sample_text = 'RT @testUser: Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97. #pyTWEETCleaner, Check it out at https:\/\/github.com\/kevalmorabia97\/pyTweetCleaner and star the repo! '
 >>>
->>> tc = TweetCleaner(remove_stop_words=True, remove_retweets=False)
+>>> tc = TweetCleaner(remove_stop_words=False, remove_retweets=False)
 >>> print(tc.get_cleaned_text(sample_text))
-RT @testUser: Cleaning unnecessary data pyTweetCleaner @kevalMorabia97 #pyTWEETCleaner Check star repo
+RT @testUser: Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97 #pyTWEETCleaner Check it out at and star the repo
 >>>
 >>> tc = TweetCleaner(remove_stop_words=False, remove_retweets=True)
 >>> print(tc.get_cleaned_text(sample_text))
  
 >>>
->>> tc = TweetCleaner(remove_stop_words=False, remove_retweets=False)
+>>> tc = TweetCleaner(remove_stop_words=True, remove_retweets=False, stopwords_file='user_stopwords.txt')
 >>> print(tc.get_cleaned_text(sample_text))
-RT @testUser: Cleaning unnecessary data with pyTweetCleaner by @kevalMorabia97 #pyTWEETCleaner Check it out at and star the repo
+RT @testUser: unnecessary data pyTweetCleaner @kevalMorabia97 #pyTWEETCleaner Check star repo
 
 ```
 
