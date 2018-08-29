@@ -8,6 +8,7 @@ REMOVE:        TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SO
                DATA ABOUT DELETED TWEETS
                NON-ASCII CHARACTERS FROM text
                HYPERLINKS FROM text
+               STOPWORDS from text
   
 KEEP:          created_at
                id
