@@ -40,12 +40,12 @@ pip install -r requirements.txt
 
 **Data Removed and Kept:**
 ```
-REMOVE:        TWEETS THAT HAVE in_reply_to_status_id !=null i.e. COMMENTS ON SOMEONE ELSE'S TWEETS
+REMOVE:        TWEETS THAT HAVE in_reply_to_status_id != null i.e. COMMENTS ON SOMEONE ELSE'S TWEETS
                TWEETS THAT HAVE lang != en i.e. NOT IN ENGLISH LANGUAGE
                DATA ABOUT DELETED TWEETS
                NON-ASCII CHARACTERS FROM text
                HYPERLINKS FROM text
-               STOPWORDS from text
+               STOPWORDS FROM text
   
 KEEP:          created_at
                id
